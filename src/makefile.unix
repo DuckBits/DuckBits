@@ -154,7 +154,7 @@ endif
 all: litecoind
 
 test check: test_litecoin FORCE
-    ./test_litecoin
+	./test_litecoin
 
 #
 # LevelDB support
@@ -171,46 +171,46 @@ leveldb/libleveldb.a:
 -include obj-test/*.P
 
 obj/build.h: FORCE
-    /bin/sh ../share/genbuild.sh obj/build.h
+	/bin/sh ../share/genbuild.sh obj/build.h
 version.cpp: obj/build.h
 DEFS += -DHAVE_BUILD_INFO
 
 obj/%-sse2.o: %-sse2.cpp
-    $(CXX) -c $(xCXXFLAGS) -msse2 -MMD -MF $(@:%.o=%.d) -o $@ $<
-    @cp $(@:%.o=%.d) $(@:%.o=%.P); \
-      sed -e 's/#.*//' -e 's/^[^:]*: *//' -e 's/ *\\$$//' \
-          -e '/^$$/ d' -e 's/$$/ :/' < $(@:%.o=%.d) >> $(@:%.o=%.P); \
-      rm -f $(@:%.o=%.d)
+	$(CXX) -c $(xCXXFLAGS) -msse2 -MMD -MF $(@:%.o=%.d) -o $@ $<
+	@cp $(@:%.o=%.d) $(@:%.o=%.P); \
+	sed -e 's/#.*//' -e 's/^[^:]*: *//' -e 's/ *\\$$//' \
+		 -e '/^$$/ d' -e 's/$$/ :/' < $(@:%.o=%.d) >> $(@:%.o=%.P); \
+	rm -f $(@:%.o=%.d)
 
 obj/%.o: %.cpp
-    $(CXX) -c $(xCXXFLAGS) -MMD -MF $(@:%.o=%.d) -o $@ $<
-    @cp $(@:%.o=%.d) $(@:%.o=%.P); \
-      sed -e 's/#.*//' -e 's/^[^:]*: *//' -e 's/ *\\$$//' \
-          -e '/^$$/ d' -e 's/$$/ :/' < $(@:%.o=%.d) >> $(@:%.o=%.P); \
-      rm -f $(@:%.o=%.d)
+	$(CXX) -c $(xCXXFLAGS) -MMD -MF $(@:%.o=%.d) -o $@ $<
+	@cp $(@:%.o=%.d) $(@:%.o=%.P); \
+	sed -e 's/#.*//' -e 's/^[^:]*: *//' -e 's/ *\\$$//' \
+		-e '/^$$/ d' -e 's/$$/ :/' < $(@:%.o=%.d) >> $(@:%.o=%.P); \
+	rm -f $(@:%.o=%.d)
 
 litecoind: $(OBJS:obj/%=obj/%)
-    $(LINK) $(xCXXFLAGS) -o $@ $^ $(xLDFLAGS) $(LIBS)
+	$(LINK) $(xCXXFLAGS) -o $@ $^ $(xLDFLAGS) $(LIBS)
 
 TESTOBJS := $(patsubst test/%.cpp,obj-test/%.o,$(wildcard test/*.cpp))
 
 obj-test/%.o: test/%.cpp
-    $(CXX) -c $(TESTDEFS) $(xCXXFLAGS) -MMD -MF $(@:%.o=%.d) -o $@ $<
-    @cp $(@:%.o=%.d) $(@:%.o=%.P); \
-      sed -e 's/#.*//' -e 's/^[^:]*: *//' -e 's/ *\\$$//' \
-          -e '/^$$/ d' -e 's/$$/ :/' < $(@:%.o=%.d) >> $(@:%.o=%.P); \
-      rm -f $(@:%.o=%.d)
+	$(CXX) -c $(TESTDEFS) $(xCXXFLAGS) -MMD -MF $(@:%.o=%.d) -o $@ $<
+	@cp $(@:%.o=%.d) $(@:%.o=%.P); \
+	sed -e 's/#.*//' -e 's/^[^:]*: *//' -e 's/ *\\$$//' \
+		-e '/^$$/ d' -e 's/$$/ :/' < $(@:%.o=%.d) >> $(@:%.o=%.P); \
+	rm -f $(@:%.o=%.d)
 
 test_litecoin: $(TESTOBJS) $(filter-out obj/init.o,$(OBJS:obj/%=obj/%))
-    $(LINK) $(xCXXFLAGS) -o $@ $(LIBPATHS) $^ $(TESTLIBS) $(xLDFLAGS) $(LIBS)
+	$(LINK) $(xCXXFLAGS) -o $@ $(LIBPATHS) $^ $(TESTLIBS) $(xLDFLAGS) $(LIBS)
 
 clean:
-    -rm -f litecoind test_litecoin
-    -rm -f obj/*.o
-    -rm -f obj-test/*.o
-    -rm -f obj/*.P
-    -rm -f obj-test/*.P
-    -rm -f obj/build.h
-    -cd leveldb && $(MAKE) clean || true
+	-rm -f litecoind test_litecoin
+	-rm -f obj/*.o
+	-rm -f obj-test/*.o
+	-rm -f obj/*.P
+	-rm -f obj-test/*.P
+	-rm -f obj/build.h
+	-cd leveldb && $(MAKE) clean || true
 
 FORCE:
