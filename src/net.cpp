@@ -1180,7 +1180,7 @@ static const char *strMainNetDNSSeed[][2] = {
 
 static const char *strTestNetDNSSeed[][2] = {
     {"sven65.zapto.org/duck", "sven65.zapto.org/duck/testnet/dnsseed"},
-    {"sven65.zapto.org/duck/pool", "sven65.zapto.org/duck/testnet/dnsseed"}
+    {"sven65.zapto.org/duck/pool", "sven65.zapto.org/duck/testnet/dnsseed"},
     {NULL, NULL}
 };
 
